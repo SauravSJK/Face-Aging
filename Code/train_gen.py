@@ -73,56 +73,11 @@ def load_dataset(run_type, model_type, job_dir):
 
 # add repeat
 def get_dataset(run_type, model_type, job_dir=".."):
-    dataset = load_dataset(run_type, model_type, job_dir).take(8)
+    dataset = load_dataset(run_type, model_type, job_dir)
     dataset = dataset.shuffle(2048)
     dataset = dataset.prefetch(buffer_size=AUTOTUNE)
     dataset = dataset.batch(8)
     return dataset
-
-def train_discriminator(job_dir="..", epochs=1, learning_rate=0.0002, patience=20):
-    tfrecords_dir = job_dir + "/tfrecords"
-    if not exists(tfrecords_dir):
-        data = get_data.get_data()
-        write_tfrecords.write_tfrecords(data)
-    dis = discriminator.discriminator(learning_rate, job_dir)
-
-    # Setup a callback for Tensorboard to store logs
-    log_dir = job_dir + "/logs/discriminator/"
-    tensorboard_callback = TensorBoard(
-        log_dir=log_dir,
-        histogram_freq=1)
-
-    # Setup a callback for Model Checkpointing
-    checkpoint_dir = job_dir + "/checkpoint/discriminator/"
-    model_checkpoint_callback = ModelCheckpoint(
-        filepath=checkpoint_dir,
-        monitor='val_loss',
-        mode='min',
-        save_best_only=True)
-
-    # Setup a callback for Backup and Restore
-    backup_dir = job_dir + "/backup/discriminator/"
-    backup_restore_callback = BackupAndRestore(
-        backup_dir,
-        save_freq="epoch",
-        delete_checkpoint=True,
-        save_before_preemption=False)
-
-    early_stopping_callback = EarlyStopping(
-        monitor="val_loss",
-        patience=patience,
-        restore_best_weights=True)
-
-    dis.fit(get_dataset("training", "discriminator", job_dir),
-            epochs=epochs,
-            verbose=2,
-            callbacks=[
-                tensorboard_callback,
-                model_checkpoint_callback,
-                backup_restore_callback,
-                early_stopping_callback],
-            validation_data=get_dataset("testing", "discriminator", job_dir))
-    return dis
 
 
 # Train gen and dis simultaneously

@@ -38,7 +38,7 @@ def load_dataset(run_type, job_dir):
 
 # add repeat
 def get_dataset(run_type, job_dir=".."):
-    dataset = load_dataset(run_type, job_dir).take(8)
+    dataset = load_dataset(run_type, job_dir)
     dataset = dataset.shuffle(2048)
     dataset = dataset.prefetch(buffer_size=AUTOTUNE)
     dataset = dataset.batch(32)
