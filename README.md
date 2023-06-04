@@ -11,7 +11,7 @@ We propose a novel GAN architecture that is specifically designed for generating
 
 Our proposed novel GAN architecture consists of two generators, two age modulators, and a discriminator. One of the generators is responsible for aging/rejuvenating the input image to the target age while the other is responsible for converting the generated image back to the source age. The encoder-decoder architecture used for the generators is expected to encode the image such that only the identity information is present in the encoding. This encoding is then sent to an age modulator which also takes a target age group as input and generates age-specific features that are then sent to each layer of the decoder network for the generation of the aged/rejuvenated image. The same flow of data is followed by the second generator for the restoration of the original image. Once an image has been generated based on the target age group, the discriminator predicts the target age group. 
 
-![Model Architecture](https://github.com/SauravSJK/Face-Aging/blob/main/images/Architecture.jpg?raw=true)
+![Model Architecture](https://github.com/SauravSJK/Face-Aging/blob/main/Images/Architecture.png?raw=true)
 
 ## Dataset
 
