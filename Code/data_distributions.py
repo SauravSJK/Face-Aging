@@ -9,7 +9,7 @@ def description(data):
 def data_plot(data, features):
     values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     if isinstance(features, str):
-        data[features].value_counts().loc[values].plot(kinds='bar')
+        data[features].value_counts().loc[values].plot(kind='bar')
     else:
         df = data[features]
         keys = df.value_counts().index.to_list()
