@@ -8,12 +8,12 @@ import data_distributions
 
 
 def main(args):
-    if args.strtopt == 'a' or input("Get UTKFace Dataset? (y/n): ") == 'y':
+    if not args.strtopt == 'p' and (args.strtopt == 'a' or input("Get UTKFace Dataset? (y/n): ") == 'y'):
         data = get_data.get_data(args.job_dir)
         write_tfrecords.write_tfrecords(data, args.job_dir)
-    if args.stropt == 'a' or input("Display data distributions (y/n): ") == 'y':
+    if not args.strtopt == 'p' and (args.stropt == 'a' or input("Display data distributions (y/n): ") == 'y'):
         data_distributions.getDataDetails(data)
-    if args.strtopt == 'a' or input("Run train_dis.py? (y/n): ") == 'y':
+    if not args.strtopt == 'p' and (args.strtopt == 'a' or input("Run train_dis.py? (y/n): ") == 'y'):
         train_dis.train_discriminator(
             args.job_dir,
             args.epochs,
@@ -24,7 +24,7 @@ def main(args):
             args.epochs,
             args.learning_rate,
             args.patience)
-    if args.strtopt == 'a' or input("Run train_gen.py? (y/n): ") == 'y':
+    if not args.strtopt == 'p' and (args.strtopt == 'a' or input("Run train_gen.py? (y/n): ") == 'y'):
         train_gen.train_generator()
     if args.strtopt == 'a' or args.strtopt == 'p' or input("Run predict.py? (y/n): ") == 'y':
         predict.predict(args.job_dir, args.prediction_file_name)
