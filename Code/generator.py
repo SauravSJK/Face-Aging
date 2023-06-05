@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 from layer_utils import res_block
 from tensorflow.keras import Model
@@ -74,12 +75,21 @@ def decoder(id_, f_age_aware):
                           padding="same")(x)
     return output_image
 
-def generator():
+
+def generator(job_dir=".."):
     input_image, id_ = encoder()
     age, f_age_aware = identity(id_)
     output_image = decoder(id_, f_age_aware)
     generator = Model(inputs=[input_image, age], outputs=[id_, output_image])
-    #print(generator.summary())
+    # print(generator.summary())
+    if not os.path.exists(job_dir + '/Model Layouts'):
+        os.makedirs(job_dir + '/Model Layouts')
+    """plot_model(generator,
+               to_file=job_dir + '/Model Layouts/Generator.png',
+               show_shapes=True,
+               expand_nested=True,
+               show_layer_activations=True,
+               show_trainable=True)"""
     return generator
 
 # Increase learning rate
@@ -138,10 +148,12 @@ def define_gan(gen, dis, learning_rate=0.0002, job_dir=".."):
     gan.compile(optimizer=Adam(learning_rate=learning_rate))
 
     #gan.summary(expand_nested=True, show_trainable=True)
-    """plot_model(gan,
-               to_file=job_dir + 'GAN.png',
+    if not os.path.exists(job_dir + '/Model Layouts'):
+        os.makedirs(job_dir + '/Model Layouts')
+    plot_model(gan,
+               to_file=job_dir + '/Model Layouts/GAN.png',
                show_shapes=True,
                expand_nested=True,
                show_layer_activations=True,
-               show_trainable=True)"""
+               show_trainable=True)
     return gan

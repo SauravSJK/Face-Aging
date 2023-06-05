@@ -1,5 +1,6 @@
 """Defines the discriminator model."""
 
+import os
 from layer_utils import res_block
 from tensorflow.keras import Model
 from tensorflow.keras import Input
@@ -33,10 +34,12 @@ def discriminator(learning_rate=0.0002, job_dir=".."):
         optimizer=Adam(learning_rate=learning_rate),
         loss="mse")
     #model.summary(expand_nested=True, show_trainable=True)
-    plot_model(model,
-               to_file=job_dir + 'Discriminator.png',
+    if not os.path.exists(job_dir + '/Model Layouts'):
+        os.makedirs(job_dir + '/Model Layouts')
+    """plot_model(model,
+               to_file=job_dir + '/Model Layouts/Discriminator.png',
                show_shapes=True,
                expand_nested=True,
                show_layer_activations=True,
-               show_trainable=True)
+               show_trainable=True)"""
     return model
