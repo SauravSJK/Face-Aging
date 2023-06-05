@@ -57,9 +57,11 @@ To train the model from scratch, execute the below. This will:
 
 Note: This will take around 5 days to complete
 
+	cd Code
 	python3 main.py --strtopt "a"
 
 To predict using trained models, execute the below.
 The default image is "/UTKFace/48_0_0_20170120134009260.jpg.chip.jpg" wth source age: 48. This can be changed by specifying a different image using the "prediction_file_name" argument.
 
+	cd Code
 	python3 main.py --strtopt "p" --prediction_file_name "/UTKFace/1_0_0_20161219200338012.jpg.chip.jpg"
