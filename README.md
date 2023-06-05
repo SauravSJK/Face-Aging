@@ -47,25 +47,25 @@ Age Prediction Accuracy|Ours (second generator)|85.8%
 
 To setup the environment for the model, execute the below:
 
-1. Clone the repository
+1. Install virtualenv if not already installed
 
-	`git clone SauravSJK/Face-Aging`
+	`pip3 install virtualenv`
 
-2. Change directory
-
-	`cd SauravSJK/Face-Aging`
-
-3. Install virtualenv if not already installed
-
-	`pip install virtualenv`
-
-4. Create your new environment (called 'venv' here)
+2. Create your new environment (called 'venv' here)
 
 	`virtualenv venv`
 
-5. Enter the virtual environment
+3. Enter the virtual environment
 
 	`source venv/bin/activate`
+	
+4. Clone the repository
+
+	`git clone https://github.com/SauravSJK/Face-Aging.git`
+	
+5. Change directory
+
+	`cd Face-Aging`
 
 6. Install the requirements in the current environment
 
@@ -85,6 +85,7 @@ Note: This will take around 5 days to complete
 
 To predict using trained models, execute the below.
 The default image is "/UTKFace/48_0_0_20170120134009260.jpg.chip.jpg" wth source age: 48. This can be changed by specifying a different image using the "prediction_file_name" argument.
+The output file will be saved as "Result.jpg" in the Face_Aging directory.
 
 	cd Code
 	python3 main.py --strtopt "p" --prediction_file_name "/UTKFace/1_0_0_20161219200338012.jpg.chip.jpg"
