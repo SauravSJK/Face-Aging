@@ -20,6 +20,29 @@ We have used the UTKFace dataset for training and validation. The UTKFace datase
 
 ## Results
 
+During the training process of our model, we observe a consistent pattern in the behavior of the loss values. Initially, the losses start with average values and exhibit a slight increase during the first few epochs. However, after this initial rise, the losses consistently decrease as the training progresses, ultimately converging to lower values by the end of the 100 epochs.
+
+This pattern of decreasing losses indicates that our model is continuously improving its performance as it receives more training iterations. The fact that the losses consistently decrease suggests that the model is learning to generate more accurate and high-quality images of faces in the target age group.
+
+To visualize this behavior, we can refer to the cumulative loss plot shown in the below figure. This plot provides a comprehensive view of the cumulative loss over the course of training. From the plot, we can observe a clear downward trend in the cumulative loss values, indicating the steady improvement of our model's performance.
+
+![Cumulative Loss](https://github.com/SauravSJK/Face-Aging/blob/f9030ed3941dbdc63a981c2fe69c14f69dda5b64/Images/cumulative_loss.png)
+
+The decreasing losses throughout the training process provide promising evidence that given more time and training iterations, our model has the potential to achieve even better results. This suggests that with additional training, the model could further refine its ability to generate realistic and age-appropriate facial images.
+
+To provide a comprehensive evaluation, we compare these metrics with the results presented in our [reference paper](https://ieeexplore.ieee.org/document/9711081), as shown in the below table. Although our model's FID score falls short when compared to that of the reference paper, it achieves superior age prediction accuracy. This discrepancy suggests that while our generated images for the target age may not align with the distribution of the input images, as depicted in the below figure, the situation improves significantly when the images are transformed back to the source age. This improvement indicates that our model effectively controls the generation process, as evidenced by the favorable pixel reconstruction loss.
+
+Metric|Method|Score
+--|--|--
+FID|RAGAN|57.78
+FID|Ours (first generator)|336668.44
+FID|Ours (second generator)|46282.770
+Age Prediction Accuracy|RAGAN|61.405%
+Age Prediction Accuracy|Ours (first generator)|95.7%
+Age Prediction Accuracy|Ours (second generator)|85.8%
+
+![Age Transformation Example](https://github.com/SauravSJK/Face-Aging/blob/ecd65929fc836deefd1434f0cc96ac142a7a4f54/Images/Transformations%20(Dark).png)
+
 ## Replication steps
 
 To setup the environment for the model, execute the below:
