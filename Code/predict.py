@@ -14,7 +14,7 @@ def predict(job_dir="..", file_name="/UTKFace/48_0_0_20170120134009260.jpg.chip.
     if not os.path.exists(job_dir + "/checkpoint/generator/"):
         print("Downloading model")
         os.system("gdown --fuzzy \"https://drive.google.com/file/d/1WmjpI3AhY_YHbvXCjOeYKbuHGuFgjEPx/view\"")
-        os.system("tar -xf checkpoint.zip")
+        os.system("unzip checkpoint.zip")
         os.system("rm checkpoint.zip")
         os.system("mv checkpoint ../")
     gen = load_model(job_dir + "/checkpoint/generator/")
