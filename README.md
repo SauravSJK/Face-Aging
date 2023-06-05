@@ -1,5 +1,6 @@
 # Face-Aging
-A GAN used for Face Aging
+
+A TensorFlow GAN model to transform input images based on target age. 
 
 ## Introduction
 
@@ -25,27 +26,27 @@ To setup the environment for the model, execute the below:
 
 1. Clone the repository
 
-`git clone SauravSJK/Face-Aging`
+	`git clone SauravSJK/Face-Aging`
 
 2. Change directory
 
-`cd SauravSJK/Face-Aging`
+	`cd SauravSJK/Face-Aging`
 
 3. Install virtualenv if not already installed
 
-`pip install virtualenv`
+	`pip install virtualenv`
 
 4. Create your new environment (called 'venv' here)
 
-`virtualenv venv`
+	`virtualenv venv`
 
 5. Enter the virtual environment
 
-`source venv/bin/activate`
+	`source venv/bin/activate`
 
 6. Install the requirements in the current environment
 
-`pip install -r requirements.txt`
+	`pip install -r requirements.txt`
 
 
 To train the model from scratch, execute the below. This will:
@@ -56,9 +57,9 @@ To train the model from scratch, execute the below. This will:
 
 Note: This will take around 5 days to complete
 
-`python3 main.py --strtopt "a"`
+	`python3 main.py --strtopt "a"`
 
 To predict using trained models, execute the below.
 The default image is "/UTKFace/48_0_0_20170120134009260.jpg.chip.jpg" wth source age: 48. This can be changed by specifying a different image using the "prediction_file_name" argument.
 
-`python3 main.py --strtopt "p" --prediction_file_name "/UTKFace/1_0_0_20161219200338012.jpg.chip.jpg"`
+	`python3 main.py --strtopt "p" --prediction_file_name "/UTKFace/1_0_0_20161219200338012.jpg.chip.jpg"`
