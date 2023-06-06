@@ -23,6 +23,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.callbacks import BackupAndRestore
 from alt_model_checkpoint.tensorflow import AltModelCheckpoint
 
+# Returns the format for the tfrecord data
 def parse_tfrecord(example):
     feature_description = {
         "image": FixedLenFeature([], tf.string),
@@ -35,52 +36,28 @@ def parse_tfrecord(example):
     example["target_age_group"] = tf.one_hot(example["target_age_group"], 14)
     return example
 
-def parse_tfrecord_gen(example):
-    feature_description = {
-        "image": FixedLenFeature([], tf.string),
-        "source_age_group": FixedLenFeature([], tf.int64),
-        "target_age_group": FixedLenFeature([], tf.int64)
-    }
-    example = parse_single_example(example, feature_description)
-    example["image"] = decode_jpeg(example["image"], channels=3)
-    example["target_age_group"] = tf.one_hot(example["target_age_group"], 14)
-    return example["image"], example["target_age_group"]
 
-def parse_tfrecord_dis(example):
-    feature_description = {
-        "image": FixedLenFeature([], tf.string),
-        "source_age_group": FixedLenFeature([], tf.int64),
-        "target_age_group": FixedLenFeature([], tf.int64)
-    }
-    example = parse_single_example(example, feature_description)
-    example["image"] = decode_jpeg(example["image"], channels=3)
-    example["source_age_group"] = tf.one_hot(example["source_age_group"], 14)
-    return example["image"], example["source_age_group"]
-
-def load_dataset(run_type, model_type, job_dir):
+# Loads the dataset based on whether we are using it for training or validation
+def load_dataset(run_type, job_dir):
     files = sorted(glob(job_dir + "/tfrecords/*"))
     if run_type == "training":
         raw_dataset = TFRecordDataset(files[:-1])
     else:
         raw_dataset = TFRecordDataset(files[-1])
-    if model_type == "full":
-        parsed_dataset = raw_dataset.map(parse_tfrecord)
-    elif model_type == "generator":
-        parsed_dataset = raw_dataset.map(parse_tfrecord_gen)
-    else:
-        parsed_dataset = raw_dataset.map(parse_tfrecord_dis)
+    parsed_dataset = raw_dataset.map(parse_tfrecord)
     return parsed_dataset
 
-# add repeat
-def get_dataset(run_type, model_type, job_dir=".."):
-    dataset = load_dataset(run_type, model_type, job_dir)
+
+# Returns the shuffled and batched dataset
+def get_dataset(run_type, job_dir=".."):
+    dataset = load_dataset(run_type, job_dir)
     dataset = dataset.shuffle(2048)
     dataset = dataset.prefetch(buffer_size=AUTOTUNE)
     dataset = dataset.batch(8)
     return dataset
 
 
-# Train gen and dis simultaneously
+# Train the generator
 def train_generator(job_dir="..", epochs=100, learning_rate=0.0002, patience=20):
     tfrecords_dir = job_dir + "/tfrecords"
     if not exists(tfrecords_dir):
@@ -120,10 +97,10 @@ def train_generator(job_dir="..", epochs=100, learning_rate=0.0002, patience=20)
         patience=patience)
 
     model_.fit(
-        get_dataset("training", "full", job_dir),
+        get_dataset("training", job_dir),
         verbose=2,
         epochs=epochs,
-        validation_data=get_dataset("testing", "full", job_dir),
+        validation_data=get_dataset("testing", job_dir),
         callbacks=[
             tensorboard_callback,
             model_checkpoint_callback,

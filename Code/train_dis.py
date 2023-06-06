@@ -18,6 +18,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.callbacks import BackupAndRestore
 
 
+# Returns the format for the tfrecord data
 def parse_tfrecord(example):
     feature_description = {
         "image": FixedLenFeature([], tf.string),
@@ -27,6 +28,7 @@ def parse_tfrecord(example):
     example["image"] = decode_jpeg(example["image"], channels=3)
     return example["image"], example["source_age_group"]
 
+# Loads the dataset based on whether we are using it for training or validation
 def load_dataset(run_type, job_dir):
     files = sorted(glob(job_dir + "/tfrecords/*"))
     if run_type == "training":
@@ -36,7 +38,8 @@ def load_dataset(run_type, job_dir):
     parsed_dataset = raw_dataset.map(parse_tfrecord)
     return parsed_dataset
 
-# add repeat
+
+# Returns the shuffled and batched dataset
 def get_dataset(run_type, job_dir=".."):
     dataset = load_dataset(run_type, job_dir)
     dataset = dataset.shuffle(2048)
@@ -45,6 +48,7 @@ def get_dataset(run_type, job_dir=".."):
     return dataset
 
 
+# Trains the discriminator
 def train_discriminator(job_dir="..", epochs=100, learning_rate=0.0002, patience=20):
     tfrecords_dir = job_dir + "/tfrecords"
     if not exists(tfrecords_dir):
@@ -90,5 +94,5 @@ def train_discriminator(job_dir="..", epochs=100, learning_rate=0.0002, patience
             validation_data=get_dataset("testing"))
 
 
-if __name__ == 'main':
+if __name__ == "__main__":
     train_discriminator()

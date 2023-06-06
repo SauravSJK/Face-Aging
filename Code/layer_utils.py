@@ -14,6 +14,7 @@ from tensorflow.keras.layers import AveragePooling2D
 from tensorflow_addons.layers import InstanceNormalization
 
 
+# Conditional batch normalization layer
 # Ref: https://colab.research.google.com/drive/1WGG8d22KoxXWBThYOeFDcHvt_z9EirHV#scrollTo=-CxyRhZaDSYk
 class ConditionBatchNormalization(Layer):
     def __init__(self):
@@ -62,6 +63,7 @@ class ConditionBatchNormalization(Layer):
         return config
 
 
+# Function for adaptive instance normalization
 # Ref: https://github.com/ariG23498/AdaIN-TF/blob/master/AdaIN.ipynb
 def ada_in(style, content, epsilon=1e-5):
     axes = [1, 2]
@@ -74,6 +76,7 @@ def ada_in(style, content, epsilon=1e-5):
     return t
 
 
+# Function to define the residual block layers
 def res_block(x, filters, kernelsize=4, sampling=None, sampling_size=2, norm_type=None, condition=None):
     if norm_type == "instance":
         y = InstanceNormalization()(x)
@@ -106,6 +109,7 @@ def res_block(x, filters, kernelsize=4, sampling=None, sampling_size=2, norm_typ
         return out
 
 
+# Custom callback to implement early stopping
 # Ref: https://stackoverflow.com/questions/64556120/early-stopping-with-multiple-conditions
 class CustomEarlyStopping(Callback):
     def __init__(self, patience=0):

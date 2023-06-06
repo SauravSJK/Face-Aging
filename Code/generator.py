@@ -11,7 +11,7 @@ from tensorflow.keras.losses import mean_squared_error
 from tensorflow.image import per_image_standardization
 from tensorflow.keras.losses import sparse_categorical_crossentropy
 
-
+# Define the encoder layout
 def encoder():
     input_image = Input(shape=(200, 200, 3))
     x = per_image_standardization(input_image)
@@ -35,6 +35,7 @@ def encoder():
     id_ = res_block(x, 512)
     return input_image, id_
 
+# Define the age modulator layout
 def identity(id_):
     age = Input(shape=(14))
     x = res_block(id_, 512,
@@ -46,7 +47,7 @@ def identity(id_):
                          padding="valid")(x)
     return age, f_age_aware
 
-# Limit output to [0, 255]
+# Define the decoder layout
 def decoder(id_, f_age_aware):
     x = res_block(id_, 512,
                   norm_type="ada_in",
@@ -76,6 +77,7 @@ def decoder(id_, f_age_aware):
     return output_image
 
 
+# Define the generator layout
 def generator(job_dir=".."):
     input_image, id_ = encoder()
     age, f_age_aware = identity(id_)
@@ -92,7 +94,7 @@ def generator(job_dir=".."):
                show_trainable=True)"""
     return generator
 
-# Increase learning rate
+# Define the GAN layout
 def define_gan(gen, dis, learning_rate=0.0002, job_dir=".."):
     dis.trainable = False
 

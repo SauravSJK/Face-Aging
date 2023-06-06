@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from os import listdir, system, path
 
-
+# Read the UTKFace dataset
 def read_dataset(job_dir=".."):
     if not path.exists(job_dir + "/UTKFace"):
         system("gdown --fuzzy \"https://drive.google.com/file/d/0BxYys69jI14kYVM3aVhKS1VhRUk/view?usp=share_link&resourcekey=0-dabpv_3J0C0cditpiAfhAw\"")
@@ -29,6 +29,7 @@ def read_dataset(job_dir=".."):
         'img': img_path})
 
 
+# Group the ages into 14 classes
 def group_age(data):
     conditions = [
         (data['age'] <= 5),
@@ -53,6 +54,7 @@ def group_age(data):
     return np.select(conditions, age_groups)
 
 
+# Call the related functions to read and return the data
 def get_data(job_dir=".."):
     data = read_dataset(job_dir)
     data["age_group"] = group_age(data)

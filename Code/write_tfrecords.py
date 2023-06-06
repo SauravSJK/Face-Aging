@@ -10,16 +10,20 @@ from tensorflow.train import Int64List
 from tensorflow.train import BytesList
 from tensorflow.io import TFRecordWriter
 
+
+# Returns a bytes_list from a string / byte
 def image_feature(value):
-    """Returns a bytes_list from a string / byte."""
     return Feature(
         bytes_list=BytesList(value=[encode_jpeg(value).numpy()])
     )
 
+
+# Returns an int64_list from a bool / enum / int / uint
 def int64_feature(value):
-    """Returns an int64_list from a bool / enum / int / uint."""
     return Feature(int64_list=Int64List(value=[value]))
 
+
+# Returns the format for each example
 def create_example(image, source_age_group, target_age_group):
     feature = {
         "image": image_feature(image),
@@ -29,6 +33,7 @@ def create_example(image, source_age_group, target_age_group):
     return Example(features=Features(feature=feature))
 
 
+# Writes the data into tfrecords
 def tf_writer(data, num_tfrecords, num_samples, tfrecords_dir, folder_path, age_groups):
     for tfrec_num in range(num_tfrecords):
         samples = data.iloc[
@@ -48,6 +53,7 @@ def tf_writer(data, num_tfrecords, num_samples, tfrecords_dir, folder_path, age_
                         writer.write(example.SerializeToString())
 
 
+# Calls the necessary functions to write the data in tfrecords format
 def write_tfrecords(data, job_dir=".."):
     num_samples = 4096
     num_tfrecords = data.shape[0] // num_samples

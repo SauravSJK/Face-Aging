@@ -12,7 +12,7 @@ from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.utils import plot_model
 from tensorflow.image import per_image_standardization
 
-# Without Leaky ReLu in block
+# Define the discriminator layout
 def discriminator(learning_rate=0.0002, job_dir=".."):
     """Define the discriminator model."""
     image_input = Input(shape=(200, 200, 3), name="image")
@@ -33,7 +33,7 @@ def discriminator(learning_rate=0.0002, job_dir=".."):
     model.compile(
         optimizer=Adam(learning_rate=learning_rate),
         loss="mse")
-    #model.summary(expand_nested=True, show_trainable=True)
+    # model.summary(expand_nested=True, show_trainable=True)
     if not os.path.exists(job_dir + '/Model Layouts'):
         os.makedirs(job_dir + '/Model Layouts')
     """plot_model(model,

@@ -10,6 +10,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.losses import mean_squared_error
 
 
+# Runs the model on a test image and transforms it based on target age
 def predict(job_dir="..", file_name="/UTKFace/48_0_0_20170120134009260.jpg.chip.jpg"):
     if not os.path.exists(job_dir + "/checkpoint/generator/"):
         print("Downloading model")

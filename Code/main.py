@@ -7,6 +7,7 @@ import write_tfrecords
 import data_distributions
 
 
+# Main function to run the code files as needed
 def main(args):
     if not args.strtopt == 'p' and (args.strtopt == 'a' or input("Get UTKFace Dataset? (y/n): ") == 'y'):
         data = get_data.get_data(args.job_dir)
