@@ -1,4 +1,4 @@
-# Face-Aging
+# Face-Aging (To be deprecated)
 
 A TensorFlow GAN model to transform input images based on target age. 
 
